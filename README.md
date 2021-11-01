@@ -1,2 +1,1 @@
-# Dungeon
-Rougelike Dungeon Crawler as a team diploma project
+# Example of humble objects pattern in Unity
