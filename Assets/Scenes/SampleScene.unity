@@ -397,9 +397,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177eb3d32762cf54098a40814ee7cafe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 1
   projectileSpeed: 10
   projectilePrefab: {fileID: 6298894318283348852, guid: 785cf76b68c83a24c8dca84ef9485622, type: 3}
-  gun: {fileID: 23325473}
-  ammo: 3
-  cooldown: 0
+  gunTransform: {fileID: 23325473}
+  gun:
+    fireRate: 0
+    ammo: 0
+    cooldown: 0

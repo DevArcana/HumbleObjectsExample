@@ -1,14 +1,62 @@
+using System;
 using UnityEngine;
+
+[Serializable]
+public class Gun
+{
+  [SerializeField]
+  private float fireRate;
+  
+  [SerializeField]
+  private int ammo;
+
+  [SerializeField]
+  private float cooldown;
+  
+  public int Ammo => ammo;
+  public float Cooldown => cooldown;
+
+  public Gun(float fireRate, int ammo)
+  {
+    this.fireRate = fireRate;
+    this.ammo = ammo;
+  }
+
+  public bool Shoot()
+  {
+    if (cooldown == 0.0f && ammo > 0)
+    {
+      ammo--;
+      cooldown = fireRate;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  public void UpdateCooldown(float deltaTime)
+  {
+    if (cooldown > 0.0f)
+    {
+      cooldown -= deltaTime;
+
+      if (cooldown < 0.0f)
+      {
+        cooldown = 0.0f;
+      }
+    }
+  }
+}
 
 public class PlayerShoot : MonoBehaviour
 {
-  public float fireRate = 1.0f;
   public float projectileSpeed = 10.0f;
   public Projectile projectilePrefab;
-  public Transform gun;
+  public Transform gunTransform;
   
-  public int ammo = 3;
-  public float cooldown = 0.0f;
+  public Gun gun;
+  
   private Camera _camera;
 
   private void Start()
@@ -18,24 +66,13 @@ public class PlayerShoot : MonoBehaviour
 
   private void Update()
   {
-    if (Input.GetMouseButtonDown(1) && cooldown == 0.0f && ammo > 0)
+    if (Input.GetMouseButtonDown(1) && gun.Shoot())
     {
-      ammo--;
-      cooldown = fireRate;
-
-      var position = gun.position;
+      var position = gunTransform.position;
       var projectile = Instantiate(projectilePrefab, position, Quaternion.identity);
       projectile.velocity = (Input.mousePosition - _camera.WorldToScreenPoint(position)).normalized * projectileSpeed;
     }
 
-    if (cooldown > 0.0f)
-    {
-      cooldown -= Time.deltaTime;
-
-      if (cooldown < 0.0f)
-      {
-        cooldown = 0.0f;
-      }
-    }
+    gun.UpdateCooldown(Time.deltaTime);
   }
 }
